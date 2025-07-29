@@ -8,11 +8,13 @@ WORKDIR /var/www/html
 # Copia todos os arquivos do seu projeto (onde o Dockerfile está) para o diretório de trabalho do contêiner
 COPY . .
 
-# Instala o Composer (gerenciador de dependências PHP)
-# Adicione 'unzip' para o Composer conseguir extrair pacotes zipados, o que é comum.
+# Instala ferramentas necessárias e o Composer
+# 'unzip' é necessário para Composer, 'git' para dependências do Composer.
+# Baixa e instala o Composer no /usr/local/bin, tornando-o globalmente disponível.
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala as dependências do Composer.
